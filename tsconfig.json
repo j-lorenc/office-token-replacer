@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "lib": ["DOM", "ES2020"],
+    "jsx": "react",
+    "importsNotUsedAsValues": "preserve",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "alwaysStrict": true,
+    "strict": true,
+    "sourceMap": true,
+    "resolveJsonModule": true
+  },
+  "types": ["node-ipc"],
+  "include": ["./src/main/**/*", "./src/preload/**/*", "./src/renderer/**/*", "src/global.d.ts"],
+  "exclude": ["node_modules", "config/**/*.ts"]
+}

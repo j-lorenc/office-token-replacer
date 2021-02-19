@@ -1,0 +1,80 @@
+{
+  "name": "electron-quick-start-typescript-react",
+  "version": "1.0.0",
+  "description": "Quickstart for electron project with typescript and react",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "start": "cross-env START_HOT=1 npm run start:renderer",
+    "start:main": "webpack --config config/webpack/preload/webpack.preload.config.js && webpack --config config/webpack/main/webpack.main.config.js && electron ./dist/main/main.js",
+    "start:renderer": "webpack serve --config config/webpack/renderer/webpack.renderer.dev.config.js",
+    "build": "npm run build:main && npm run build:preload && npm run build:renderer",
+    "build:main": "cross-env NODE_ENV=production webpack --config config/webpack/main/webpack.main.prod.config.js",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config config/webpack/renderer/webpack.renderer.prod.config.js",
+    "build:preload": "cross-env NODE_ENV=production webpack --config config/webpack/preload/webpack.preload.config.js",
+    "rebuild": "electron-rebuild",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "author": "jon lorenc",
+  "license": "ISC",
+  "devDependencies": {
+    "@hot-loader/react-dom": "^17.0.1",
+    "@svgr/webpack": "^5.5.0",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "css-loader": "^5.0.2",
+    "electron": "^11.2.3",
+    "electron-builder": "^22.9.1",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "file-loader": "^6.2.0",
+    "fork-ts-checker-webpack-plugin": "^6.1.0",
+    "html-webpack-plugin": "^5.1.0",
+    "image-webpack-loader": "^7.0.1",
+    "prettier": "^2.2.1",
+    "sass-loader": "^11.0.1",
+    "source-map-loader": "^2.0.1",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.17",
+    "webpack": "^5.23.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
+  },
+  "dependencies": {
+    "core-js": "^3.9.0",
+    "cross-env": "^7.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-hot-loader": "^4.13.0",
+    "regenerator-runtime": "^0.13.7",
+    "three": "^0.125.2",
+    "typescript": "^4.1.5"
+  },
+  "build": {
+    "productName": "electron-quick-start-typescript-react",
+    "appId": "org.electron-quick-start-typescript-react",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "./dist/**/*",
+      "package.json",
+      "./dist/main/main.js"
+    ],
+    "linux": {
+      "target": "deb"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  }
+}
