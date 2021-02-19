@@ -1,7 +1,7 @@
 {
-  "name": "electron-quick-start-typescript-react",
+  "name": "office-token-replacer",
   "version": "1.0.0",
-  "description": "Quickstart for electron project with typescript and react",
+  "description": "Replace tokens in a power point or word doc with values provided in an excel spreadsheet",
   "main": "dist/main/main.js",
   "scripts": {
     "start": "cross-env START_HOT=1 npm run start:renderer",
@@ -57,8 +57,8 @@
     "typescript": "^4.1.5"
   },
   "build": {
-    "productName": "electron-quick-start-typescript-react",
-    "appId": "org.electron-quick-start-typescript-react",
+    "productName": "office-token-replacer",
+    "appId": "org.office-token-replacer",
     "mac": {
       "category": "public.app-category.utilities"
     },
