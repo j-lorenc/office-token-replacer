@@ -3,6 +3,8 @@ const {merge} = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
+
 const path = require('path');
 const baseConfig = require('../webpack.base.config');
 
@@ -91,6 +93,10 @@ module.exports = merge(baseConfig, {
     }),
     new HtmlWebpackPlugin({
       template: 'src/renderer/index.html',
+    }),
+    new CspHtmlWebpackPlugin({
+      'script-src': '',
+      'style-src': ["'unsafe-inline'", "'self'", "'unsafe-eval'"]
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),

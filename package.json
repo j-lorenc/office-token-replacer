@@ -10,7 +10,7 @@
     "build": "npm run build:main && npm run build:preload && npm run build:renderer",
     "build:main": "cross-env NODE_ENV=production webpack --config config/webpack/main/webpack.main.prod.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config config/webpack/renderer/webpack.renderer.prod.config.js",
-    "build:preload": "cross-env NODE_ENV=production webpack --config config/webpack/preload/webpack.preload.config.js",
+    "build:preload": "cross-env NODE_ENV=production webpack --config config/webpack/preload/webpack.preload.prod.config.js",
     "rebuild": "electron-rebuild",
     "pack": "npm run build && electron-builder --dir",
     "dist": "npm run build && electron-builder",
@@ -21,10 +21,14 @@
   "devDependencies": {
     "@hot-loader/react-dom": "^17.0.1",
     "@svgr/webpack": "^5.5.0",
+    "@types/archiver": "^5.1.0",
+    "@types/jsonpath": "^0.2.0",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
+    "@types/xml2js": "^0.4.8",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
+    "csp-html-webpack-plugin": "^5.1.0",
     "css-loader": "^5.0.2",
     "electron": "^11.2.3",
     "electron-builder": "^22.9.1",
@@ -48,14 +52,20 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
+    "archiver": "^5.2.0",
     "core-js": "^3.9.0",
     "cross-env": "^7.0.3",
+    "csv-parse": "^4.15.1",
+    "extract-zip": "^2.0.1",
+    "jsonpath-plus": "^5.0.3",
+    "jszip": "^3.6.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hot-loader": "^4.13.0",
     "regenerator-runtime": "^0.13.7",
     "three": "^0.125.2",
-    "typescript": "^4.1.5"
+    "typescript": "^4.1.5",
+    "xml2js": "^0.4.23"
   },
   "build": {
     "productName": "office-token-replacer",
@@ -69,7 +79,8 @@
     "files": [
       "./dist/**/*",
       "package.json",
-      "./dist/main/main.js"
+      "./dist/main/main.js",
+      "./dist/preload/preload.js"
     ],
     "linux": {
       "target": "deb"
