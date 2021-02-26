@@ -6,22 +6,53 @@ import {
   writeFileSync,
   createWriteStream,
   createReadStream,
+  readdirSync,
 } from 'fs';
-import xml2js from 'xml2js';
 import { JSONPath } from 'jsonpath-plus';
 import archiver from 'archiver';
 import path from 'path';
 import parse from 'csv-parse';
+import convert from 'xml-js';
 
-console.log('Preload Code Goes Here');
+const extractPowerpointFile = async (fileName: string, tokenFileName: string) => {
+  const { dir, name, ext } = path.parse(fileName);
+
+  const tokens: string[][][] = await parseTokenFile(tokenFileName);
+
+  for (const i of tokens) {
+    const extractDir = path.join(dir, name + '-temp-' + i[0][1]);
+    mkdirSync(extractDir);
+    await extract(fileName, { dir: extractDir });
+
+    const slideDirectory = path.join(extractDir, 'ppt', 'slides');
+
+    const files: string[] = readdirSync(slideDirectory)
+      .filter((file) => {
+        const { ext } = path.parse(file);
+        return ext === '.xml';
+      })
+      .map((file) => {
+        return path.join(slideDirectory, file);
+      });
+
+    for (const pptFile of files) {
+      const data = readFileSync(pptFile, 'utf-8');
+
+      const result = convert.xml2json(data);
+      const obj = JSON.parse(result);
+
+      replaceText(obj, i, '$..elements[?(@.name=="a:t")]..elements[?(@.type=="text")]');
+      const xml = convert.json2xml(obj);
+
+      writeFileSync(pptFile, xml);
+    }
+
+    await zipWordDocumentFileFromFolder(extractDir, path.join(dir, name + '-' + i[0][1] + ext));
+    rmdirSync(extractDir, { recursive: true });
+  }
+};
 
 const extractDocFile = async (fileName: string, tokenFileName: string) => {
-  if (!fileName) {
-    return;
-  }
-
-  console.log('New File uploaded ', fileName);
-
   const { dir, name, ext } = path.parse(fileName);
 
   const tokens: string[][][] = await parseTokenFile(tokenFileName);
@@ -35,12 +66,11 @@ const extractDocFile = async (fileName: string, tokenFileName: string) => {
 
     const data = readFileSync(documentFile, 'utf-8');
 
-    const parser = new xml2js.Parser();
-    const builder = new xml2js.Builder();
+    const result = convert.xml2json(data);
+    const obj = JSON.parse(result);
 
-    const result = await parser.parseStringPromise(data);
-    replaceText(result, i);
-    const xml = builder.buildObject(result);
+    replaceText(obj, i, '$..elements[?(@.name=="a:t")]..elements[?(@.type=="text")]');
+    const xml = convert.json2xml(obj);
     writeFileSync(documentFile, xml);
     await zipWordDocumentFileFromFolder(extractDir, path.join(dir, name + '-' + i[0][1] + ext));
     rmdirSync(extractDir, { recursive: true });
@@ -48,16 +78,12 @@ const extractDocFile = async (fileName: string, tokenFileName: string) => {
 };
 
 interface ComplexNode {
-  $: JSON;
-  _: string;
+  type: string;
+  text: string;
 }
 
-function isStringNode(node: string | ComplexNode): node is string {
-  return (node as string).includes !== undefined;
-}
-
-const replaceText = (result: JSON, token: string[][]) => {
-  const nodes: (string | ComplexNode)[][] = JSONPath({ path: '$..w:t', json: result });
+const replaceText = (result: JSON, token: string[][], pattern: string) => {
+  const nodes: ComplexNode[] = JSONPath({ path: pattern, json: result });
 
   const searchTokens = token.map((t) => {
     return t[0];
@@ -66,26 +92,16 @@ const replaceText = (result: JSON, token: string[][]) => {
   nodes
     .filter((node) => {
       let tokenFound = false;
-      console.log(node);
 
       for (const t of searchTokens) {
-        if (isStringNode(node[0])) {
-          tokenFound = tokenFound || node[0].includes(t);
-        } else {
-          tokenFound = tokenFound || node[0]['_'] ? node[0]['_'].includes(t) : false;
-        }
+        tokenFound = tokenFound || node.text.includes(t);
       }
       return tokenFound;
     })
     .forEach((node) => {
       for (const t of token) {
-        if (isStringNode(node[0])) {
-          node[0] = node[0].replace(t[0], t[1]);
-        } else {
-          node[0]['_'] = node[0]['_'].replace(t[0], t[1]);
-        }
+        node.text = node.text.replace(t[0], t[1]);
       }
-      return node;
     });
 };
 
@@ -129,7 +145,6 @@ const parseTokenFile = (tokenFileName: string): Promise<string[][][]> => {
     const parser = parse(
       { delimiter: ',', columns: true, skip_empty_lines: true },
       function (err, data) {
-        console.log('data', data);
         const arrayData = convertCsvToArray(data);
         resolve(arrayData);
       }
@@ -143,7 +158,20 @@ process.once('loaded', () => {
   window.addEventListener('message', (event) => {
     const message = event.data;
     if (message.action === 'EXTRACT_FILE') {
-      extractDocFile(message.payload.fileName, message.payload.tokenFileName);
+      const { fileName, tokenFileName } = message.payload;
+
+      if (!fileName) {
+        return;
+      }
+
+      const { ext } = path.parse(fileName);
+
+      if (ext == '.docx') {
+        extractDocFile(fileName, tokenFileName);
+      }
+      if (['.potx', '.pptx'].includes(ext)) {
+        extractPowerpointFile(fileName, tokenFileName);
+      }
     }
   });
 });

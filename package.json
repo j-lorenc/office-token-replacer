@@ -65,7 +65,7 @@
     "regenerator-runtime": "^0.13.7",
     "three": "^0.125.2",
     "typescript": "^4.1.5",
-    "xml2js": "^0.4.23"
+    "xml-js": "^1.6.11"
   },
   "build": {
     "productName": "office-token-replacer",

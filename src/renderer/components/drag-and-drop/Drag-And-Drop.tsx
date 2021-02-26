@@ -39,9 +39,8 @@ const DragAndDrop: React.FC<{
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
       >
-        {dropsiteLabel}
+        {fileName ? fileName.split('\\').pop() : dropsiteLabel}
       </div>
-      <div>{fileName}</div>
     </div>
   );
 };
