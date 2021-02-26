@@ -69,7 +69,7 @@ const extractDocFile = async (fileName: string, tokenFileName: string) => {
     const result = convert.xml2json(data);
     const obj = JSON.parse(result);
 
-    replaceText(obj, i, '$..elements[?(@.name=="a:t")]..elements[?(@.type=="text")]');
+    replaceText(obj, i, '$..elements[?(@.name=="w:t")]..elements[?(@.type=="text")]');
     const xml = convert.json2xml(obj);
     writeFileSync(documentFile, xml);
     await zipWordDocumentFileFromFolder(extractDir, path.join(dir, name + '-' + i[0][1] + ext));
