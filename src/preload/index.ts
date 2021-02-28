@@ -132,8 +132,12 @@ const zipWordDocumentFileFromFolder = (
   });
 };
 
-const convertCsvToArray = (data: any): string[][][] => {
-  return data.map((datum: any) => {
+interface CSVRow {
+  [key: string]: string;
+}
+
+const convertCsvToArray = (data: CSVRow[]): string[][][] => {
+  return data.map((datum: CSVRow) => {
     return Object.keys(datum).map((key) => {
       return [key, datum[key]];
     });
