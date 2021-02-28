@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 let win: BrowserWindow | null = null;
@@ -30,6 +30,21 @@ const createWindow = () => {
       contextIsolation: true,
     },
   });
+
+  const fileMenuItem = new MenuItem({ role: 'fileMenu' });
+  const viewMenuItem = new MenuItem({
+    label: 'View',
+    submenu: [
+      {
+        role: 'reload',
+      },
+    ],
+  });
+
+  const appMenu = new Menu();
+  appMenu.append(fileMenuItem);
+  appMenu.append(viewMenuItem);
+  Menu.setApplicationMenu(appMenu);
 
   const localUrl = url.pathToFileURL(path.join(__dirname, '../renderer/', 'index.html'));
 
