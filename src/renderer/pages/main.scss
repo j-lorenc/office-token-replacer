@@ -1,0 +1,32 @@
+$button-color: rgba(5, 147, 250, 1);
+$button-color-dark: darken(
+  $color: $button-color,
+  $amount: 10%,
+);
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px;
+
+  & > div {
+    flex: 1;
+    margin-bottom: 20px;
+  }
+
+  button {
+    background-color: $button-color;
+    border: 1px solid $button-color-dark;
+    color: white;
+    outline: none;
+    height: 50px;
+    font-size: 14px;
+    font-family: NotoSans-Medium;
+
+    &:hover {
+      background-color: $button-color-dark;
+      cursor: pointer;
+    }
+  }
+}

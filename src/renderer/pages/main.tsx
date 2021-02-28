@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DragAndDrop from '../components/drag-and-drop/Drag-And-Drop';
+import './main.scss';
 
 const Application: React.FC = () => {
   const [fileName, setFileName] = useState<string>('');
@@ -10,7 +11,7 @@ const Application: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={'container'}>
       <DragAndDrop
         fileName={fileName}
         setFileName={setFileName}
@@ -20,7 +21,7 @@ const Application: React.FC = () => {
       <DragAndDrop
         fileName={tokenFileName}
         setFileName={setTokenFileName}
-        dropsiteLabel={'Drop Token File Here'}
+        dropsiteLabel={'Drop Variable File Here'}
       />
 
       <button onClick={() => extractFile()}>Export</button>

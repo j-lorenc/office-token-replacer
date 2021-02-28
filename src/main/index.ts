@@ -21,9 +21,10 @@ app.on('activate', () => {
 
 const createWindow = () => {
   win = new BrowserWindow({
-    title: 'electron-quick-start-typescript-react',
-    width: 600,
-    height: 400,
+    title: 'Office Token Replacer',
+    width: 300,
+    height: 560,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, '../preload', 'preload.js'),
       contextIsolation: true,

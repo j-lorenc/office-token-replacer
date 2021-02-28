@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'NotoSans';
+  src: url('./assets/fonts/NotoSans/NotoSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'NotoSans-Medium';
+  src: url('./assets/fonts/NotoSans/NotoSans-Medium.ttf') format('truetype');
+  font-weight: 400;
+}
+
+html {
+  height: 100%;
+  background-color: rgba(233, 233, 233, 1);
+  font-family: NotoSans-Medium, Helvetica, Arial, sans-serif;
+}
+
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  box-sizing: border-box;
+}
