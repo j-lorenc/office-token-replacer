@@ -1,7 +1,7 @@
 {
   "name": "office-token-replacer",
-  "version": "0.0.1",
-  "description": "Replace tokens in a power point or word doc with values provided in an excel spreadsheet",
+  "version": "1.0.0",
+  "description": "Replace variables in a power point or word doc with values provided in an excel spreadsheet",
   "main": "dist/main/main.js",
   "scripts": {
     "start": "cross-env START_HOT=1 npm run start:renderer",
@@ -16,7 +16,7 @@
     "dist": "npm run build && electron-builder",
     "postinstall": "electron-builder install-app-deps"
   },
-  "author": "jon lorenc",
+  "author": "Jon Lorenc",
   "license": "ISC",
   "devDependencies": {
     "@hot-loader/react-dom": "^17.0.1",
@@ -74,13 +74,15 @@
       "category": "public.app-category.utilities"
     },
     "directories": {
+      "buildResources": "./resources",
       "output": "release"
     },
     "files": [
       "./dist/**/*",
       "package.json",
       "./dist/main/main.js",
-      "./dist/preload/preload.js"
+      "./dist/preload/preload.js",
+      "./resources/icon.png"
     ],
     "linux": {
       "target": "deb"
