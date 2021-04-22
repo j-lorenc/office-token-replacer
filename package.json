@@ -55,7 +55,7 @@
     "archiver": "^5.2.0",
     "core-js": "^3.9.0",
     "cross-env": "^7.0.3",
-    "csv-parse": "^4.15.1",
+    "csv-parse": "^4.15.4",
     "extract-zip": "^2.0.1",
     "jsonpath-plus": "^5.0.3",
     "jszip": "^3.6.0",
