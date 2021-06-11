@@ -20,6 +20,7 @@ const extractPowerpointFile = async (fileName: string, tokenFileName: string) =>
   const tokens: string[][][] = await parseTokenFile(tokenFileName);
 
   for (const i of tokens) {
+    i[0][1] = i[0][1].trim();
     const extractDir = path.join(dir, name + '-temp-' + i[0][1]);
     mkdirSync(extractDir);
     await extract(fileName, { dir: extractDir });
@@ -58,7 +59,8 @@ const extractDocFile = async (fileName: string, tokenFileName: string) => {
   const tokens: string[][][] = await parseTokenFile(tokenFileName);
 
   for (const i of tokens) {
-    const extractDir = path.join(dir, name + '-temp-' + i[0][1].trim());
+    i[0][1] = i[0][1].trim();
+    const extractDir = path.join(dir, name + '-temp-' + i[0][1]);
     const documentFile = path.join(extractDir, 'word', 'document.xml');
 
     mkdirSync(extractDir);
