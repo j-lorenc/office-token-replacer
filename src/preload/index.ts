@@ -58,7 +58,7 @@ const extractDocFile = async (fileName: string, tokenFileName: string) => {
   const tokens: string[][][] = await parseTokenFile(tokenFileName);
 
   for (const i of tokens) {
-    const extractDir = path.join(dir, name + '-temp-' + i[0][1]);
+    const extractDir = path.join(dir, name + '-temp-' + i[0][1].trim());
     const documentFile = path.join(extractDir, 'word', 'document.xml');
 
     mkdirSync(extractDir);

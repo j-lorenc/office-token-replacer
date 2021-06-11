@@ -1,6 +1,6 @@
 {
   "name": "office-token-replacer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Replace variables in a power point or word doc with values provided in an excel spreadsheet",
   "main": "dist/main/main.js",
   "scripts": {
